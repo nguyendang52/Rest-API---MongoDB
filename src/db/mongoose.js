@@ -24,16 +24,16 @@ module.exports = { getConnect };
 //         console.log(err);
 //     });
 
-const taskSchema = new mongoose.Schema({
-    description: { type: String, trim: true, required: true },
-    completed: { type: Boolean, default: false },
-});
-const Task = mongoose.model('Task', taskSchema);
+// const taskSchema = new mongoose.Schema({
+//     description: { type: String, trim: true, required: true },
+//     completed: { type: Boolean, default: false },
+// });
+// const Task = mongoose.model('Task', taskSchema);
 
-const instanceTask = new Task({
-    description: 'Learn c#',
-    completed: false,
-});
+// const instanceTask = new Task({
+//     description: 'Learn c#',
+//     completed: false,
+// });
 // const createTask = async (task) => {
 //     await task.save();
 // };
