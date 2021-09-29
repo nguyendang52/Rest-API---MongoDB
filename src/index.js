@@ -135,3 +135,13 @@ app.use(userRoute);
 app.listen(port, () => {
     console.log('Server is listening on port ' + port);
 });
+
+const bcrypt = require('bcrypt');
+
+const myFunction = async () => {
+    const password = 'Red12345';
+    const hashedPassword = await bcrypt.hash(password, 8);
+    console.log(password);
+    console.log(hashedPassword);
+};
+myFunction();
