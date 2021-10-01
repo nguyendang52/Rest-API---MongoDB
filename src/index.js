@@ -7,6 +7,11 @@ const userRoute = require('../src/routes/user');
 const app = express();
 const port = process.env.PORT || 3000;
 db.getConnect();
+
+app.use((req, res, next) => {
+  res.status(503).send('Site is currently down. Check back soon.');
+});
+
 app.use(express.json());
 app.use(userRoute);
 // app.get('/users', async (req, res) => {
@@ -132,16 +137,9 @@ app.use(userRoute);
 //         res.status(400).send(e);
 //     }
 // });
+
+const jwt = require('jsonwebtoken');
+
 app.listen(port, () => {
-    console.log('Server is listening on port ' + port);
+  console.log('Server is listening on port ' + port);
 });
-
-const bcrypt = require('bcrypt');
-
-const myFunction = async () => {
-    const password = 'Red12345';
-    const hashedPassword = await bcrypt.hash(password, 8);
-    console.log(password);
-    console.log(hashedPassword);
-};
-myFunction();
