@@ -2,17 +2,15 @@ const express = require('express');
 const db = require('./db/mongoose.js');
 const User = require('./models/user.js');
 const Task = require('./models/task.js');
+// const auth = require('./middleware/auth');
 const userRoute = require('../src/routes/user');
-
+const taskRoute = require('../src/routes/task');
 const app = express();
 const port = process.env.PORT || 3000;
 db.getConnect();
 
-app.use((req, res, next) => {
-  res.status(503).send('Site is currently down. Check back soon.');
-});
-
 app.use(express.json());
+app.use(taskRoute);
 app.use(userRoute);
 // app.get('/users', async (req, res) => {
 //     try {
@@ -138,8 +136,17 @@ app.use(userRoute);
 //     }
 // });
 
-const jwt = require('jsonwebtoken');
-
 app.listen(port, () => {
   console.log('Server is listening on port ' + port);
 });
+
+// const main = async () => {
+//   // const task = await Task.findById('615880b59d4bbb7ec149ab4d');
+//   // await task.populate('owner').exec();
+//   // console.log(task.owner);
+//   const user = await User.findById('61587a9a5d0cdd6396a4c357').populate(
+//     'tasks'
+//   );
+//   console.log(user.tasks);
+// };
+// main();

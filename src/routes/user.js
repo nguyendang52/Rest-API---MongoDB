@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controller/user');
+const auth = require('../middleware/auth');
 // router.get('/users/:id');
 // router.get('/users');
 // router.post('/users');
@@ -8,7 +9,9 @@ const userController = require('../controller/user');
 // router.delete('/users/:id');
 router.post('/users', userController.create);
 router.post('/users/login', userController.login);
-
-router.get('/users', userController.read);
-router.patch('/users/:id', userController.update);
+router.post('/users/logout', auth, userController.logout);
+router.post('/users/logoutAll', auth, userController.logoutAll);
+router.get('/users/me', auth, userController.read);
+router.patch('/users/me', auth, userController.update);
+router.delete('/users/me', auth, userController.delete);
 module.exports = router;

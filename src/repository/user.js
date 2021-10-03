@@ -1,4 +1,4 @@
-const User = require("../models/user");
+const User = require('../models/user');
 
 module.exports = {
   createUser(stu) {
@@ -13,7 +13,10 @@ module.exports = {
   updateUser(id, stu, propertyUpdates) {},
 
   login(email, password) {
-    
     return User.findByCredentials(email, password);
+  },
+
+  deleteUser(user) {
+    return user.remove();
   },
 };
