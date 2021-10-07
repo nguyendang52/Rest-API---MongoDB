@@ -28,7 +28,26 @@ module.exports = {
       // cachs 1
       //const tasks = await taskRepository.findAllTasks(req.user._id);
       // cach 2
-      await req.user.populate('tasks');
+      const match = {};
+      const sort = {};
+      if (req.query.completed) {
+        match.completed = req.query.completed;
+      }
+      if (req.query.sortBy) {
+        const parts = req.query.sortBy.split(':');
+        sort[parts[0]] = parts[1] === 'desc' ? -1 : 1;
+      }
+      await req.user.populate({
+        path: 'tasks',
+        match,
+        options: {
+          limit: parseInt(req.query.limit),
+          skip: parseInt(req.query.skip),
+          sort: {
+            createdAt: -1,
+          },
+        },
+      });
       res.send(req.user.tasks);
     } catch (err) {
       res.status(500).send(err);

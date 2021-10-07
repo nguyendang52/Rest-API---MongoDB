@@ -2,41 +2,47 @@ const validator = require('validator');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const userSchema = new mongoose.Schema({
-  name: { type: String, required: true, trim: true },
-  email: {
-    type: String,
-    unique: true,
-    required: true,
-    trim: true,
-    lowercase: true,
-    validate(value) {
-      if (!validator.isEmail(value)) {
-        throw new Error('Email is invalid');
-      }
-    },
-  },
-  age: {
-    type: Number,
-    min: 6,
-    max: 12,
-    default: 0,
-  },
-  password: {
-    type: String,
-    required: true,
-    trim: true,
-    minLength: 6,
-  },
-  tokens: [
-    {
-      token: {
-        type: String,
-        required: true,
+const Task = require('../models/task');
+const userSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true, trim: true },
+    email: {
+      type: String,
+      unique: true,
+      required: true,
+      trim: true,
+      lowercase: true,
+      validate(value) {
+        if (!validator.isEmail(value)) {
+          throw new Error('Email is invalid');
+        }
       },
     },
-  ],
-});
+    age: {
+      type: Number,
+      min: 6,
+      max: 12,
+      default: 0,
+    },
+    password: {
+      type: String,
+      required: true,
+      trim: true,
+      minLength: 6,
+    },
+    tokens: [
+      {
+        token: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
+  },
+  {
+    timestamps: true,
+  }
+);
 
 userSchema.virtual('tasks', {
   ref: 'Task',
@@ -83,6 +89,14 @@ userSchema.pre('save', async function (next) {
     const hashedPassword = await bcrypt.hash(user.password, 8);
     user.password = hashedPassword;
   }
+  next();
+
+  // Delete user tasks when user is removed
+});
+userSchema.pre('remove', async function (next) {
+  const user = this;
+  console.log('abc');
+  await Task.deleteMany({ owner: user._id });
   next();
 });
 const User = mongoose.model('User', userSchema);
