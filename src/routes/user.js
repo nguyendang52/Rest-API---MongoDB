@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controller/user');
 const auth = require('../middleware/auth');
+const upload = require('../middleware/uploadfile');
 // router.get('/users/:id');
 // router.get('/users');
 // router.post('/users');
@@ -14,4 +15,9 @@ router.post('/users/logoutAll', auth, userController.logoutAll);
 router.get('/users/me', auth, userController.read);
 router.patch('/users/me', auth, userController.update);
 router.delete('/users/me', auth, userController.delete);
+router.post(
+  '/users/me/avatar',
+  upload.uploadAvatar,
+  userController.uploadAvatar
+);
 module.exports = router;

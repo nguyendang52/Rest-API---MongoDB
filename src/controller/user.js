@@ -88,6 +88,9 @@ module.exports = {
       res.status(500).send();
     }
   },
+  async uploadAvatar(req, res) {
+    res.send();
+  },
   // app.patch('/users/:id', async (req, res) => {
   //     const propertyUpdates = Object.keys(req.body);
   //     const propertyAllowUpdates = Object.keys(User);
