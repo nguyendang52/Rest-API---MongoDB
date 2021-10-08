@@ -1,5 +1,6 @@
+const { base } = require('../models/task');
 const userRepository = require('../repository/user');
-
+const sharp = require('sharp');
 module.exports = {
   async create(req, res) {
     try {
@@ -24,8 +25,7 @@ module.exports = {
     const propertyAllowUpdates = Object.getOwnPropertyNames(
       req.user.toObject()
     );
-    console.log(req.user);
-    console.log(propertyAllowUpdates);
+
     const isValidOperation = propertyUpdates.every(prop =>
       propertyAllowUpdates.includes(prop)
     );
@@ -45,8 +45,6 @@ module.exports = {
   },
   async login(req, res) {
     try {
-      console.log(req.body.email);
-      console.log(req.body.password);
       const user = await userRepository.login(
         req.body.email,
         req.body.password
@@ -89,28 +87,37 @@ module.exports = {
     }
   },
   async uploadAvatar(req, res) {
+    const buffer = await sharp(req.file.buffer)
+      .resize(250, 250)
+      .png()
+      .toBuffer();
+    req.user.avatar = new Buffer.from(buffer, 'base64');
+    await req.user.save();
     res.send();
   },
-  // app.patch('/users/:id', async (req, res) => {
-  //     const propertyUpdates = Object.keys(req.body);
-  //     const propertyAllowUpdates = Object.keys(User);
-  //     const isValidOperation = propertyUpdates.every((pro) =>
-  //         propertyAllowUpdates.includes(pro)
-  //     );
-  //     if (!isValidOperation) {
-  //         return res.status(400).send({ error: 'Invalid update' });
-  //     }
-  //     try {
-  //         const user = await User.findByIdAndUpdate(req.params.id, req.body, {
-  //             new: true,
-  //             runValidators: true,
-  //         });
-  //         if (!user) {
-  //             return res.sendStatus(404).send();
-  //         }
-  //         res.send(user);
-  //     } catch (err) {
-  //         res.status(400).send(e);
-  //     }
-  // });
+  async uploadFail(error, req, res, next) {
+    res.status(400).send({
+      error: error.message,
+    });
+  },
+  async deleteAvatar(req, res) {
+    req.user.avatar = undefined;
+    await req.user.save();
+    res.send();
+  },
+  async getAvatar(req, res) {
+    try {
+      console.log(req.params.id);
+      const user = await userRepository.readUserById(req.params.id);
+
+      if (!user || !user.avatar) {
+        throw new Error();
+      }
+      res.set('Content-Type', 'image/png');
+      res.send(user.avatar);
+    } catch (err) {
+      console.log('co loi');
+      res.status(404).send();
+    }
+  },
 };

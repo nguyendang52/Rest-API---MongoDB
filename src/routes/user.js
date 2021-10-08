@@ -17,7 +17,11 @@ router.patch('/users/me', auth, userController.update);
 router.delete('/users/me', auth, userController.delete);
 router.post(
   '/users/me/avatar',
+  auth,
   upload.uploadAvatar,
-  userController.uploadAvatar
+  userController.uploadAvatar,
+  userController.uploadFail
 );
+router.get('/users/:id/avatar', userController.getAvatar);
+router.delete('/users/me/avatar', auth, userController.deleteAvatar);
 module.exports = router;
