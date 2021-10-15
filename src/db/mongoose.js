@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 getConnect = async () => {
-    await mongoose.connect('mongodb://localhost:27017/task-manager-api', {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    });
-    console.log('Connect Success!');
+  await mongoose.connect(process.env.MONGODB_URL + process.env.DB_NAME, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  console.log('Connect Success!');
 };
 module.exports = { getConnect };
 

@@ -1,6 +1,8 @@
 const { base } = require('../models/task');
 const userRepository = require('../repository/user');
 const sharp = require('sharp');
+const { sendWelcomeEmail } = require('../emails/account');
+
 module.exports = {
   async create(req, res) {
     try {
@@ -8,6 +10,7 @@ module.exports = {
       // const hash = bcrypt.hashSync("B4c0//", salt);
 
       const user = await userRepository.createUser(req.body);
+      sendWelcomeEmail(user.email, user.name);
       const token = await user.generateAuthToken();
       res.status(201).send({ user, token });
     } catch (err) {
@@ -80,6 +83,7 @@ module.exports = {
 
   async delete(req, res) {
     try {
+      console.log('abc');
       await userRepository.deleteUser(req.user);
       res.send(req.user);
     } catch (e) {

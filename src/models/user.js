@@ -100,7 +100,7 @@ userSchema.pre('save', async function (next) {
 });
 userSchema.pre('remove', async function (next) {
   const user = this;
-  console.log('abc');
+
   await Task.deleteMany({ owner: user._id });
   next();
 });

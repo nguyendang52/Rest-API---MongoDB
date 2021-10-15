@@ -1,14 +1,14 @@
 const express = require('express');
 
-const db = require('./db/mongoose.js');
-const User = require('./models/user.js');
-const Task = require('./models/task.js');
+const db = require('./db/mongoose');
+const User = require('./models/user');
+const Task = require('./models/task');
 
 // const auth = require('./middleware/auth');
-const userRoute = require('../src/routes/user');
-const taskRoute = require('../src/routes/task');
+const userRoute = require('./routes/user');
+const taskRoute = require('./routes/task');
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 
 db.getConnect();
 

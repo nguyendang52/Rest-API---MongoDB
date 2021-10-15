@@ -19,7 +19,6 @@ const upload = multer({
     if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
       return cb(new Error('Please upload file JPG, JPEG, PNG '));
     }
-
     cb(null, true);
   },
 
