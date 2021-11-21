@@ -6,9 +6,6 @@ const { sendWelcomeEmail } = require('../emails/account');
 module.exports = {
   async create(req, res) {
     try {
-      // const salt = bcrypt.genSaltSync(10);
-      // const hash = bcrypt.hashSync("B4c0//", salt);
-
       const user = await userRepository.createUser(req.body);
       sendWelcomeEmail(user.email, user.name);
       const token = await user.generateAuthToken();
@@ -33,7 +30,7 @@ module.exports = {
       propertyAllowUpdates.includes(prop)
     );
     if (!isValidOperation) {
-      return res.status(400).send({ error: 'Invalid update1' });
+      return res.status(400).send({ error: 'Invalid update' });
     }
     try {
       propertyUpdates.forEach(prop => {

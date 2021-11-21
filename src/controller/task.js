@@ -25,9 +25,9 @@ module.exports = {
   },
   async findAll(req, res) {
     try {
-      // cachs 1
+      // Solution 1
       //const tasks = await taskRepository.findAllTasks(req.user._id);
-      // cach 2
+      // Solution 2
       const match = {};
       const sort = {};
       if (req.query.completed) {

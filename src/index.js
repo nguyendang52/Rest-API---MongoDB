@@ -1,12 +1,13 @@
 const express = require('express');
 
 const db = require('./db/mongoose');
+
 const User = require('./models/user');
 const Task = require('./models/task');
 
-// const auth = require('./middleware/auth');
 const userRoute = require('./routes/user');
 const taskRoute = require('./routes/task');
+
 const app = express();
 const port = process.env.PORT;
 

@@ -11,7 +11,6 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({
-  // challenge
   limits: {
     fileSize: 1000000,
   },
@@ -22,7 +21,7 @@ const upload = multer({
     cb(null, true);
   },
 
-  // ni la lam them
+  // bonus
   // limits: {
   //   fileSize: 1000000,
   // },
